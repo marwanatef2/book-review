@@ -1,0 +1,38 @@
+html{
+  height: 100%;
+}
+
+body{
+  background-image: url('images/background3.jpg') ;
+  background-size: cover;
+  background-position: center;
+  font-family: 'Merriweather', serif;
+  background-color: cadetblue;
+}
+
+#content {
+  text-align: center;
+  padding-top: 50px;
+  color: white;
+}
+#content h1{
+  font-size: 300%;
+  font-weight: 600;
+}
+#content p{
+  font-size: 110%;
+  padding: 20px 0;
+}
+
+#gotcha{
+  font-size: 150%;
+}
+
+form{
+  padding-left: 200px;
+}
+
+i{
+  padding-right: 7px;
+  padding-left: 7px;
+}
