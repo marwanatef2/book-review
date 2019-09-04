@@ -1,0 +1,27 @@
+html{
+  height: 100%;
+}
+
+body{
+  background-image: url('images/background3.jpg') ;
+  background-size: cover;
+  background-position: center;
+  font-family: 'Merriweather', serif;
+  color: white;
+}
+
+i{
+  padding-right: 7px;
+  padding-left: 7px;
+}
+
+h2{
+  font-size: 260%;
+  color: darkblue;
+}
+p{
+  font-size: 130%;
+}
+strong{
+  color: crimson;
+}
