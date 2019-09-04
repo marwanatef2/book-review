@@ -7,14 +7,20 @@ body{
   background-size: cover;
   background-position: center;
   font-family: 'Merriweather', serif;
-}
-
-.col-6, .col-4{
-  margin: auto;
   color: white;
 }
 
 i{
   padding-right: 7px;
   padding-left: 7px;
+}
+
+h2{
+  font-size: 260%;
+}
+p{
+  font-size: 130%;
+}
+strong{
+  color: darkblue;
 }
