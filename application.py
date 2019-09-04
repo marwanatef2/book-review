@@ -60,7 +60,7 @@ def book():
                 for book in res['books']:
                     book_review.append((book['work_ratings_count'], book['average_rating']))
 
-                return render_template('book.html', title='Books Found', found_books=enumerate(found_books), name=loggedin_name, stylefile='booki.css', book_review=book_review)
+                return render_template('book.html', title='Books Found', found_books=enumerate(found_books), name=loggedin_name, stylefile='bookee.css', book_review=book_review)
             else:
                 flash('No books found!', category='warning')
                 return redirect(url_for('home'))
