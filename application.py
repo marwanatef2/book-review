@@ -1,4 +1,5 @@
 import os
+import requests
 
 from flask import Flask, session, render_template, url_for, request, redirect, flash
 from flask_bcrypt import Bcrypt
@@ -25,12 +26,45 @@ db = scoped_session(sessionmaker(bind=engine))
 # for password hashing
 bcrypt = Bcrypt(app)
 
+# goodreads api key
+api_key = 'pXU1aeUhm4RKk98xkH6tw'
+
 loggedin_name = None
 
 @app.route("/")
 @app.route("/home", methods=['GET', 'POST'])
 def home():
     return render_template('home.html', title='Home', stylefile='homie.css', name=loggedin_name)
+
+
+@app.route('/book', methods=['POST', 'GET'])
+def book():
+    if request.method=='POST':
+        if not loggedin_name:
+            flash("You are not logged in.", category="warning")
+            return redirect(url_for('login'))
+
+        else:
+            form = request.form
+            query = form['search']
+            found_books = db.execute('SELECT * FROM books WHERE isbn=:query OR title=:query OR author=:query OR year=:query', {'query':query}).fetchall()
+
+            if found_books:
+                books_isbns = [book['isbn'] for book in found_books]
+                str_books_isbns = ",".join(books_isbns)
+
+                res = requests.get("https://www.goodreads.com/book/review_counts.json", params={'key':api_key, 'isbns':str_books_isbns})
+                res = res.json()
+
+                book_review=list()
+                for book in res['books']:
+                    book_review.append((book['work_ratings_count'], book['average_rating']))
+
+                return render_template('book.html', title='Books Found', found_books=enumerate(found_books), name=loggedin_name, stylefile='booki.css', book_review=book_review)
+            else:
+                flash('No books found!', category='warning')
+                return redirect(url_for('home'))
+
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
@@ -54,9 +88,10 @@ def login():
             else:
                 flash('Incorrect password!', category='danger')
         else:
-            flash('Invalid email!', category='danger')
+            flash('Invalid email! Please check or sign up.', category='danger')
 
     return render_template('login.html', title='Log in', stylefile='logine.css')
+
 
 @app.route("/signup", methods=['GET', 'POST'])
 def signup():
@@ -84,6 +119,7 @@ def signup():
             return redirect(url_for('login'))
     else:
         return render_template('signup.html', title='Sign up', stylefile='signupee.css')
+
 
 @app.route('/logout')
 def logout():
